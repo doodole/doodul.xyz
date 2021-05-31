@@ -1,0 +1,23 @@
+extends table
+
+block content
+    div(id='table-margins' style="overflow-x:auto;")
+        table.table.table-striped.table-dark.table-bordered
+            thead 
+                tr
+                    th Command 
+                    th Aliases
+                    th 
+                        div(style={'min-width':'14em'}) Description 
+                    th User Cooldown (s)
+                    th Channel Cooldown (s)
+                    th Permissions
+            tbody
+                each entry, i in command
+                    tr
+                        td= entry.name
+                        td= entry.aliases
+                        td= entry.description 
+                        td= entry.userCooldown/1000
+                        td= entry.chanCooldown/1000
+                        td= entry.permissions
