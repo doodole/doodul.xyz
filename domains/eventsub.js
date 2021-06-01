@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const CryptoJS = require('crypto-js')
 const connections = require('../connections')
-const mysql = require(`mysql`);
+const mysql = require(`mysql2`);
 const app = express()
 
 app.use(express.json())
@@ -72,7 +72,7 @@ app.post ('/live', async (req, res) => {
         SET isLive = 'true' 
         WHERE channelUID = ${mysql.escape(req.body.event.broadcaster_user_id)}`
       )
-      const result = await connections.query(`SELECT * FROM live WHERE channelUID = ${mysql.escape(req.body.event.broadcaster_user_id)}`)
+      const [result] = await con.promise().query(`SELECT * FROM live WHERE channelUID = ${mysql.escape(req.body.event.broadcaster_user_id)}`)
       if (result[0].notifications === 'yes') {
         if (result[0].peopleLive === null || result[0].peopleLive === '') {
           client.say(req.body.event.broadcaster_user_login, result[0].messageLive)
@@ -111,7 +111,7 @@ app.post ('/live', async (req, res) => {
         SET isLive = 'false' 
         WHERE channelUID = ${mysql.escape(req.body.event.broadcaster_user_id)}`
       )
-      const result = await connections.query(`SELECT * FROM live WHERE channelUID = ${mysql.escape(req.body.event.broadcaster_user_id)}`)
+      const [result] = await con.promise().query(`SELECT * FROM live WHERE channelUID = ${mysql.escape(req.body.event.broadcaster_user_id)}`)
       if (result[0].notifications === 'yes') {
         if (result[0].peopleOffline === null || result[0].peopleOffline === '') {
           client.say(req.body.event.broadcaster_user_login, result[0].messageOffline)

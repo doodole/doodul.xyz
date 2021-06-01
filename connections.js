@@ -1,5 +1,4 @@
-var mysql = require(`mysql`);
-const util = require('util')
+var mysql = require(`mysql2`);
 const Twitch = require("dank-twitch-irc")
 require('dotenv').config()
 
@@ -11,7 +10,6 @@ con = mysql.createConnection({
 });
 
 exports.con = con
-exports.query = util.promisify(con.query).bind(con);
 
 let client = new Twitch.ChatClient({
   username: process.env.BOT_NAME,

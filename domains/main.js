@@ -13,8 +13,6 @@ app.engine('pug', require('pug').__express)
 app.set('views', path.join(__dirname, '/pugstuff/pug'))
 app.set('view engine', 'pug')
 
-let client = connections.client
-
 const con = connections.con
 
 app.get('/', (req, res) => {
@@ -22,7 +20,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/commands', async (req, res) => {
-  let command = await connections.query('SELECT * FROM commands WHERE permissions != "me"')
+  const [command] = await con.promise().query('SELECT * FROM commands WHERE permissions != "me"')
   res.render('commands', {
     command: command
   })
